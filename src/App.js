@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 class App extends Component {
-
+// sets state of items and isLoaded
   constructor(props) {
     super(props);
     this.state = {
@@ -10,8 +10,8 @@ class App extends Component {
     }
   }
 
+  // Method is called on mount
   componentDidMount() {
-
     fetch('https://jsonplaceholder.typicode.com/users')
       .then(res => res.json())
       .then(json => {
@@ -20,9 +20,8 @@ class App extends Component {
             items: json,
         })
       });
-
   }
-
+// Renders from Virtual DOM
   render() {
 
     var { isLoaded, items } = this.state;
@@ -30,12 +29,9 @@ class App extends Component {
     if (!isLoaded) {
       return <div>loading...</div>;
     }
-
-    else {
-      
+    else { 
       return (
         <div className="App">
-          
           <ul>
             {items.map(item => (
               <li key={item.id}>
@@ -43,12 +39,9 @@ class App extends Component {
               </li>
             ))};
           </ul>
-
         </div>
       );
-
     }
-
   }
 }
 
