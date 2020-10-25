@@ -12,12 +12,13 @@ class App extends Component {
 
   // Method is called on mount
   componentDidMount() {
-    fetch('https://jsonplaceholder.typicode.com/users')
+    fetch('https://randomuser.me/api/?results=5')
       .then(res => res.json())
       .then(json => {
+        // console.log(state);
         this.setState({
             isLoaded: true,
-            items: json,
+            items: json.results,
         })
       });
   }
@@ -26,23 +27,20 @@ class App extends Component {
 
     var { isLoaded, items } = this.state;
 
-    if (!isLoaded) {
-      return <div>loading...</div>;
-    }
-    else { 
-      return (
+    return (
         <div className="App">
           <ul>
-            {items.map(item => (
-              <li key={item.id}>
-                Name: {item.name} | Email: {item.email}
+            {this.state.items.map((item) => {
+              return(
+              <li key={item.id.value}>
+                {item.name.first} | Email: {item.email}
               </li>
-            ))};
+              )
+            })}
           </ul>
         </div>
-      );
+      )
     }
   }
-}
 
 export default App;
