@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import "./App.css";
 
 export default class App extends Component {
   // sets state of items and isLoaded
@@ -14,6 +15,7 @@ export default class App extends Component {
     fetch('https://randomuser.me/api/?results=5')
     .then((res) => res.json())
     .then((json) => {
+      console.log(json)
       this.setState({
         items: json.results,
       })
@@ -49,15 +51,23 @@ export default class App extends Component {
     
     return (
       <div className="App">
-        <ul>
+        <div>
           {this.state.items.map((item) => {
             return (
-              <li key={this.getFullName(item)}>
-                {this.getFullName(item)} | Email: {item.email}
-              </li>
+              <div 
+                key={this.getFullName(item)}
+                className="card"
+              >
+                <div className="name">
+                  {this.getFullName(item)}
+                </div>
+                <div className="email">
+                  Email: {item.email}
+                </div>
+              </div>
             )
           })}
-        </ul>
+        </div>
         <button
           className="ascending-btn"
           onClick={this.sortNames}
