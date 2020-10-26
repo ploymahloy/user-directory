@@ -1,61 +1,70 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 export default class App extends Component {
   // sets state of items and isLoaded
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       items: [],
-      isLoaded: false,
     }
   }
-
+  
   // Method is called on mount
   componentDidMount() {
     fetch('https://randomuser.me/api/?results=5')
-      .then(res => res.json())
-      .then(json => {
-        // console.log(state);
-        this.setState({
-            isLoaded: true,
-            items: json.results,
-        })
-      });
+    .then((res) => res.json())
+    .then((json) => {
+      this.setState({
+        items: json.results,
+      })
+    })
+  }
+  
+  getFullName = (item) => {
+    return `${item.name.last}, ${item.name.first}`
   }
 
-  sortNames() {
-    function compare( a, b ) {
-      if ( a.last_nom < b.last_nom ){
-        return -1;
-      }
-      if ( a.last_nom > b.last_nom ){
-        return 1;
-      }
-      return 0;
+  compareNames = (a, b) => {
+    const aFullName = this.getFullName(a)
+    const bFullName = this.getFullName(b)
+    
+    if (aFullName < bFullName) {
+      return -1
     }
-
-    // objs.sort( compare );
+    if (aFullName > bFullName) {
+      return 1
+    }
+    return 0
   }
-
+  
+  sortNames = () => {
+    this.setState({
+      items: [...this.state.items].sort(this.compareNames),
+    })
+  }
+  
   // Renders from Virtual DOM
   render() {
-    var { isLoaded, items } = this.state;
-
+    const { items } = this.state
+    
     return (
       <div className="App">
         <ul>
           {this.state.items.map((item) => {
-            return(
-            <li key={item.id.value}>
-              {item.name.first} | Email: {item.email}
-            </li>
+            return (
+              <li key={this.getFullName(item)}>
+                {this.getFullName(item)} | Email: {item.email}
+              </li>
             )
           })}
         </ul>
-        <button className="ascending-btn">
+        <button
+          className="ascending-btn"
+          onClick={this.sortNames}
+        >
           Sort in Ascending Order
         </button>
       </div>
-    )
+    );
   }
 }
